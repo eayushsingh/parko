@@ -8,21 +8,12 @@ import { SpaceCard } from '../components/explore/SpaceCard';
 import {
   Car,
   QrCode,
-  Calendar,
-  Clock,
   MapPin,
   CheckCircle2,
-  XCircle,
   AlertCircle,
   Heart,
-  Plus,
-  FileText,
   ShieldCheck,
-  ChevronRight,
-  ExternalLink,
   Edit2,
-  Trash2,
-  Navigation,
 } from 'lucide-react';
 
 export const DriverDashboardPage: React.FC = () => {
@@ -289,7 +280,7 @@ export const DriverDashboardPage: React.FC = () => {
                         </div>
                         <div>
                           <span className="text-slate-400 text-[10px] uppercase font-bold block">Total Paid</span>
-                          <span className="font-bold text-navy-900 block">${b.totalAmount.toFixed(2)}</span>
+                          <span className="font-bold text-navy-900 block">₹{b.totalAmount.toFixed(2)}</span>
                         </div>
                       </div>
                     </div>
@@ -348,7 +339,7 @@ export const DriverDashboardPage: React.FC = () => {
                           </span>
                         </div>
                         <h4 className="font-bold text-sm text-navy-900 mt-0.5">{b.spaceTitle}</h4>
-                        <p className="text-xs text-slate-400">{b.date} &bull; {b.durationHours} hrs &bull; ${b.totalAmount.toFixed(2)}</p>
+                        <p className="text-xs text-slate-400">{b.date} &bull; {b.durationHours} hrs &bull; ₹{b.totalAmount.toFixed(2)}</p>
                       </div>
                     </div>
 

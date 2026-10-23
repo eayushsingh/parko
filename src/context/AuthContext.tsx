@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { UserProfile, UserRole } from '../types';
 import { DEMO_DRIVER_PROFILE, DEMO_OWNER_PROFILE } from '../data/mockData';
+import { api } from '../services/api';
 
 interface AuthContextType {
   user: UserProfile;
@@ -64,25 +65,38 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       email,
       role: selectedRole,
       avatar: selectedRole === 'owner' ? DEMO_OWNER_PROFILE.avatar : DEMO_DRIVER_PROFILE.avatar,
-      phone: '+1 (555) 019-8392',
+      phone: '+91 98765 43210',
       memberSince: 'October 2026',
       isVerified: true,
       defaultVehicle: selectedRole === 'driver' ? {
-        makeModel: 'Tesla Model 3',
-        licensePlate: '7XYZ892',
-        state: 'CA'
+        makeModel: 'Tesla Model 3 (Midnight Silver)',
+        licensePlate: 'MH 02 CZ 8921',
+        state: 'Maharashtra'
       } : undefined
     };
     setRole(selectedRole);
     setUser(newUser);
+
+    // Sync with backend API
+    api.auth.login(email, selectedRole).catch((err) => console.warn('Logged in locally:', err));
   };
 
   const updateUser = (updates: Partial<UserProfile>) => {
-    setUser((prev) => ({ ...prev, ...updates }));
+    setUser((prev) => {
+      const updated = { ...prev, ...updates };
+      if (updates.defaultVehicle) {
+        api.auth.updateVehicle({
+          userId: updated.id,
+          makeModel: updates.defaultVehicle.makeModel,
+          licensePlate: updates.defaultVehicle.licensePlate,
+          state: updates.defaultVehicle.state
+        }).catch((err) => console.warn('Updated vehicle locally:', err));
+      }
+      return updated;
+    });
   };
 
   const logout = () => {
-    // Reset to default driver demo
     setRole('driver');
     setUser(DEMO_DRIVER_PROFILE);
   };
@@ -105,6 +119,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

@@ -4,8 +4,8 @@ import { useParking } from '../context/ParkingContext';
 import { FilterBar, FilterState } from '../components/explore/FilterBar';
 import { SpaceCard } from '../components/explore/SpaceCard';
 import { InteractiveMap } from '../components/explore/InteractiveMap';
-import { ParkingSpace } from '../types';
-import { SearchX, SlidersHorizontal, Map, Grid } from 'lucide-react';
+import { VehicleSize } from '../types';
+import { SearchX } from 'lucide-react';
 
 export const ExplorePage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -19,7 +19,7 @@ export const ExplorePage: React.FC = () => {
   const [filters, setFilters] = useState<FilterState>({
     searchQuery: initialQuery,
     parkingType: initialType,
-    maxPrice: 15,
+    maxPrice: 250,
     selectedAmenities: [],
     vehicleSize: 'Any Size',
     sortBy: 'rating',
@@ -45,7 +45,7 @@ export const ExplorePage: React.FC = () => {
     setFilters({
       searchQuery: '',
       parkingType: 'All Types',
-      maxPrice: 15,
+      maxPrice: 250,
       selectedAmenities: [],
       vehicleSize: 'Any Size',
       sortBy: 'rating',
@@ -84,7 +84,7 @@ export const ExplorePage: React.FC = () => {
         // Vehicle size
         if (
           filters.vehicleSize !== 'Any Size' &&
-          !space.vehicleCompatibility.includes(filters.vehicleSize as any)
+          !space.vehicleCompatibility.includes(filters.vehicleSize as VehicleSize)
         ) {
           return false;
         }

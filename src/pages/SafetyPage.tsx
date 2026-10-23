@@ -3,16 +3,11 @@ import { Link } from 'react-router-dom';
 import {
   ShieldCheck,
   Lock,
-  Camera,
   Car,
   FileCheck,
   CheckCircle2,
   Sparkles,
-  HelpCircle,
   Building,
-  AlertTriangle,
-  ArrowRight,
-  PhoneCall,
 } from 'lucide-react';
 
 export const SafetyPage: React.FC = () => {
@@ -79,7 +74,7 @@ export const SafetyPage: React.FC = () => {
             <div className="w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center">
               <ShieldCheck className="w-6 h-6" />
             </div>
-            <h3 className="font-extrabold text-base text-navy-950">$1M Host Protection</h3>
+            <h3 className="font-extrabold text-base text-navy-950">₹10 Lakhs Host Protection</h3>
             <p className="text-xs text-slate-500 leading-relaxed">
               Hosts are shielded by comprehensive property damage and third-party liability coverage for total peace of mind.
             </p>
@@ -142,7 +137,7 @@ export const SafetyPage: React.FC = () => {
                 </li>
                 <li className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                  <span><strong>$1,000,000 Host Shield:</strong> Covers accidental damage to driveways, gates, walls, and third-party claims.</span>
+                  <span><strong>₹10,00,000 Host Shield:</strong> Covers accidental damage to driveways, gates, walls, and third-party claims.</span>
                 </li>
               </ul>
             </div>

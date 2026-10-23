@@ -101,3 +101,35 @@ export interface UserProfile {
     state: string;
   };
 }
+
+export interface OwnerMetrics {
+  activeListingsCount: number;
+  totalStalls: number;
+  totalOccupied: number;
+  occupancyRate: number;
+  estimatedMonthlyEarnings: number;
+  thisWeekNet: number;
+  allTimeEarnings: number;
+  depositAccount: string;
+  nextPayoutDate: string;
+  hostShieldActive: boolean;
+  hostShieldLimit: string;
+  recentPayouts: Array<{
+    id: string;
+    date: string;
+    hours: number;
+    amount: number;
+    status: string;
+  }>;
+}
+
+export interface PlatformMetrics {
+  totalSpaces: number;
+  liveBookings: number;
+  totalReservations: number;
+  totalHoursParked: number;
+  currency: string;
+  hostProtectionLimit: string;
+  satisfactionRate: number;
+  averageCheckInSeconds: number;
+}

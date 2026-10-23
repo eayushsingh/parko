@@ -10,7 +10,6 @@ import {
   TrendingUp,
   DollarSign,
   Calendar,
-  Clock,
   Eye,
   Trash2,
   Edit,
@@ -20,8 +19,6 @@ import {
   Car,
   AlertCircle,
   ShieldCheck,
-  ChevronRight,
-  ArrowUpRight,
 } from 'lucide-react';
 
 export const OwnerDashboardPage: React.FC = () => {
@@ -98,7 +95,7 @@ export const OwnerDashboardPage: React.FC = () => {
                   </span>
                 </div>
                 <p className="text-xs text-slate-500 mt-1">
-                  Managing {ownerSpaces.length} parking spaces across San Francisco Metro &bull; $1M Host Shield Active
+                  Managing {ownerSpaces.length} parking spaces across the Metro &bull; ₹10 Lakhs Host Shield Active
                 </p>
               </div>
             </div>
@@ -122,7 +119,7 @@ export const OwnerDashboardPage: React.FC = () => {
                 Estimated Monthly Revenue
               </span>
               <span className="text-2xl font-extrabold text-brand-600 mt-1 block">
-                ${estimatedMonthlyDemoEarnings.toLocaleString()}
+                ₹{estimatedMonthlyDemoEarnings.toLocaleString('en-IN')}
               </span>
               <span className="text-[10px] text-slate-400">Projected sample revenue</span>
             </div>
@@ -152,7 +149,7 @@ export const OwnerDashboardPage: React.FC = () => {
                 Next Payout
               </span>
               <span className="text-2xl font-extrabold text-navy-900 mt-1 block">
-                $412.80
+                ₹4,250.00
               </span>
               <span className="text-[10px] text-slate-400">Friday direct deposit</span>
             </div>
@@ -276,7 +273,7 @@ export const OwnerDashboardPage: React.FC = () => {
                         <p className="text-xs text-slate-500 truncate mt-0.5">{space.address} &bull; {space.neighborhood}</p>
                         
                         <div className="flex items-center gap-4 mt-2 text-xs text-slate-500">
-                          <span>Rate: <strong className="text-navy-900">${space.hourlyRate}/hr</strong></span>
+                          <span>Rate: <strong className="text-navy-900">₹{space.hourlyRate}/hr</strong></span>
                           <span>&bull;</span>
                           <span>Stalls: <strong className="text-navy-900">{space.occupiedSpots} / {space.totalSpots} occupied</strong></span>
                           <span>&bull;</span>
@@ -449,7 +446,7 @@ export const OwnerDashboardPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-white rounded-3xl border border-slate-200 p-6 space-y-2 shadow-soft-xs">
                 <span className="text-xs text-slate-500 font-bold uppercase">This Week's Net</span>
-                <p className="text-3xl font-black text-navy-950">$412.80</p>
+                <p className="text-3xl font-black text-navy-950">₹4,250.00</p>
                 <p className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
                   <TrendingUp className="w-3.5 h-3.5" /> +18% vs last week
                 </p>
@@ -457,13 +454,13 @@ export const OwnerDashboardPage: React.FC = () => {
 
               <div className="bg-white rounded-3xl border border-slate-200 p-6 space-y-2 shadow-soft-xs">
                 <span className="text-xs text-slate-500 font-bold uppercase">All-Time Earnings</span>
-                <p className="text-3xl font-black text-brand-600">$4,892.50</p>
+                <p className="text-3xl font-black text-brand-600">₹48,920.00</p>
                 <p className="text-xs text-slate-400">Total 318 completed bookings</p>
               </div>
 
               <div className="bg-white rounded-3xl border border-slate-200 p-6 space-y-2 shadow-soft-xs">
                 <span className="text-xs text-slate-500 font-bold uppercase">Deposit Account</span>
-                <p className="text-sm font-bold text-navy-900">Silicon Valley Bank &bull;&bull;&bull;&bull; 8921</p>
+                <p className="text-sm font-bold text-navy-900">HDFC Bank &bull;&bull;&bull;&bull; 8921</p>
                 <p className="text-xs text-slate-400">Next deposit arrives this Friday</p>
               </div>
             </div>
@@ -476,21 +473,21 @@ export const OwnerDashboardPage: React.FC = () => {
                     <p className="font-bold text-navy-900">Direct Deposit #TX-98421</p>
                     <p className="text-slate-400">Oct 17, 2026 &bull; 48 reservation hours</p>
                   </div>
-                  <span className="font-bold text-emerald-600 text-sm">+$384.00 (Paid)</span>
+                  <span className="font-bold text-emerald-600 text-sm">+₹3,840.00 (Paid)</span>
                 </div>
                 <div className="py-3 flex justify-between items-center">
                   <div>
                     <p className="font-bold text-navy-900">Direct Deposit #TX-98012</p>
                     <p className="text-slate-400">Oct 10, 2026 &bull; 54 reservation hours</p>
                   </div>
-                  <span className="font-bold text-emerald-600 text-sm">+$432.00 (Paid)</span>
+                  <span className="font-bold text-emerald-600 text-sm">+₹4,320.00 (Paid)</span>
                 </div>
                 <div className="py-3 flex justify-between items-center">
                   <div>
                     <p className="font-bold text-navy-900">Direct Deposit #TX-97814</p>
                     <p className="text-slate-400">Oct 3, 2026 &bull; 41 reservation hours</p>
                   </div>
-                  <span className="font-bold text-emerald-600 text-sm">+$328.00 (Paid)</span>
+                  <span className="font-bold text-emerald-600 text-sm">+₹3,280.00 (Paid)</span>
                 </div>
               </div>
             </div>
@@ -509,13 +506,13 @@ export const OwnerDashboardPage: React.FC = () => {
             </p>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Hourly Price ($/hr)</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Hourly Price (₹/hr)</label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">₹</span>
                 <input
                   type="number"
-                  min="2"
-                  max="40"
+                  min="20"
+                  max="300"
                   required
                   value={newRate}
                   onChange={(e) => setNewRate(Number(e.target.value))}

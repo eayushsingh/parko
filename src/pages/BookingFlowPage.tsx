@@ -1,31 +1,27 @@
 import React, { useState } from 'react';
-import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { useParking } from '../context/ParkingContext';
 import { useAuth } from '../context/AuthContext';
+import { Booking } from '../types';
 import {
   ShieldCheck,
   CheckCircle2,
   Calendar,
-  Clock,
   Car,
   CreditCard,
   UploadCloud,
   FileCheck,
-  Sparkles,
   ArrowRight,
   ArrowLeft,
   Lock,
-  QrCode,
   MapPin,
   Check,
   AlertCircle,
-  HelpCircle,
 } from 'lucide-react';
 
 export const BookingFlowPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
 
   const { getSpaceById, addBooking } = useParking();
   const { user } = useAuth();
@@ -58,7 +54,7 @@ export const BookingFlowPage: React.FC = () => {
   const [cardCvc, setCardCvc] = useState('•••');
 
   // Completed Booking Reference
-  const [completedBooking, setCompletedBooking] = useState<any>(null);
+  const [completedBooking, setCompletedBooking] = useState<Booking | null>(null);
 
   if (!space) {
     return (
@@ -282,6 +278,18 @@ export const BookingFlowPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={driverEmail}
+                      onChange={(e) => setDriverEmail(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold text-navy-900 outline-none focus:border-brand-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
                       Phone Number
                     </label>
                     <input
@@ -349,7 +357,7 @@ export const BookingFlowPage: React.FC = () => {
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between text-slate-600">
                     <span>Spot Rate</span>
-                    <span className="font-semibold text-navy-900">${space.hourlyRate}/hr</span>
+                    <span className="font-semibold text-navy-900">₹{space.hourlyRate}/hr</span>
                   </div>
                   <div className="flex justify-between text-slate-600">
                     <span>Duration</span>
@@ -357,15 +365,15 @@ export const BookingFlowPage: React.FC = () => {
                   </div>
                   <div className="flex justify-between text-slate-600">
                     <span>Subtotal</span>
-                    <span className="font-semibold text-navy-900">${subtotal.toFixed(2)}</span>
+                    <span className="font-semibold text-navy-900">₹{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-slate-600">
                     <span>Platform & Guarantee Fee (10%)</span>
-                    <span className="font-semibold text-navy-900">${serviceFee.toFixed(2)}</span>
+                    <span className="font-semibold text-navy-900">₹{serviceFee.toFixed(2)}</span>
                   </div>
                   <div className="pt-3 border-t border-slate-100 flex justify-between text-base font-extrabold text-navy-950">
                     <span>Total Amount</span>
-                    <span className="text-brand-600">${totalAmount.toFixed(2)}</span>
+                    <span className="text-brand-600">₹{totalAmount.toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -539,7 +547,7 @@ export const BookingFlowPage: React.FC = () => {
                   type="submit"
                   className="flex-1 py-3.5 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-sm shadow-soft-md transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                 >
-                  <span>Authorize & Complete Booking (${totalAmount.toFixed(2)})</span>
+                  <span>Authorize & Complete Booking (₹{totalAmount.toFixed(2)})</span>
                   <Check className="w-4 h-4" />
                 </button>
               </div>
@@ -571,7 +579,7 @@ export const BookingFlowPage: React.FC = () => {
                   </div>
                   <div className="pt-3 border-t border-slate-100 flex justify-between text-base font-extrabold text-navy-950">
                     <span>Total Due:</span>
-                    <span className="text-brand-600">${totalAmount.toFixed(2)}</span>
+                    <span className="text-brand-600">₹{totalAmount.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -663,7 +671,7 @@ export const BookingFlowPage: React.FC = () => {
                   </div>
                   <div>
                     <span className="text-slate-400 uppercase tracking-wider text-[10px] font-bold block">Total Paid (Demo)</span>
-                    <span className="font-bold text-navy-900 block">${totalAmount.toFixed(2)} via {paymentMethod}</span>
+                    <span className="font-bold text-navy-900 block">₹{totalAmount.toFixed(2)} via {paymentMethod}</span>
                   </div>
                 </div>
 

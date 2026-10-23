@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { UserRole } from '../types';
+import { ParkoLogo } from '../components/common/ParkoLogo';
 import {
   Car,
   Building,
@@ -14,7 +15,6 @@ import {
   ShieldCheck,
   Sparkles,
   ArrowRight,
-  CheckCircle2,
 } from 'lucide-react';
 
 export const AuthPage: React.FC = () => {
@@ -85,11 +85,8 @@ export const AuthPage: React.FC = () => {
       
       {/* Brand Header */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-2">
-        <Link to="/" className="inline-flex items-center gap-2 mb-2">
-          <div className="w-10 h-10 rounded-xl bg-navy-900 flex items-center justify-center text-brand-500 font-extrabold text-2xl shadow-soft-sm">
-            P
-          </div>
-          <span className="font-extrabold text-2xl text-navy-950 tracking-tight">parko</span>
+        <Link to="/" className="inline-flex items-center justify-center mb-3 group" aria-label="Parko Home">
+          <ParkoLogo size="lg" />
         </Link>
         <h1 className="text-2xl font-extrabold text-navy-900 tracking-tight">
           {mode === 'signin' ? 'Sign in to your account' : 'Create your Parko account'}

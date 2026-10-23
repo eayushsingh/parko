@@ -5,17 +5,14 @@ import { MOCK_REVIEWS } from '../data/mockData';
 import {
   Star,
   MapPin,
-  Clock,
   ShieldCheck,
   CheckCircle2,
   Heart,
   Share2,
   Car,
-  Zap,
   Info,
   Calendar,
   ChevronLeft,
-  Warehouse,
   ArrowRight,
   AlertCircle,
 } from 'lucide-react';
@@ -328,12 +325,12 @@ export const SpaceDetailPage: React.FC = () => {
               {/* Pricing Header */}
               <div className="flex items-baseline justify-between border-b border-slate-100 pb-4">
                 <div>
-                  <span className="text-3xl font-black text-navy-950">${space.hourlyRate}</span>
+                  <span className="text-3xl font-black text-navy-950">₹{space.hourlyRate}</span>
                   <span className="text-xs text-slate-500 font-medium ml-1">/ hour</span>
                 </div>
                 {space.dailyMaxRate && (
                   <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
-                    ${space.dailyMaxRate} daily cap
+                    ₹{space.dailyMaxRate} daily cap
                   </span>
                 )}
               </div>
@@ -413,19 +410,19 @@ export const SpaceDetailPage: React.FC = () => {
               {/* Price Breakdown */}
               <div className="pt-4 border-t border-slate-100 space-y-2 text-xs">
                 <div className="flex justify-between text-slate-600">
-                  <span>${space.hourlyRate} &times; {durationHours} {durationHours === 1 ? 'hour' : 'hours'}</span>
-                  <span className="font-semibold text-navy-900">${subtotal.toFixed(2)}</span>
+                  <span>₹{space.hourlyRate} &times; {durationHours} {durationHours === 1 ? 'hour' : 'hours'}</span>
+                  <span className="font-semibold text-navy-900">₹{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <span className="flex items-center gap-1">
                     Parko Service & Guarantee Fee
                     <Info className="w-3 h-3 text-slate-400" />
                   </span>
-                  <span className="font-semibold text-navy-900">${serviceFee.toFixed(2)}</span>
+                  <span className="font-semibold text-navy-900">₹{serviceFee.toFixed(2)}</span>
                 </div>
                 <div className="pt-3 border-t border-slate-100 flex justify-between text-sm font-extrabold text-navy-950">
                   <span>Total Due</span>
-                  <span className="text-brand-600 text-base">${totalAmount.toFixed(2)}</span>
+                  <span className="text-brand-600 text-base">₹{totalAmount.toFixed(2)}</span>
                 </div>
               </div>
 

@@ -16,8 +16,6 @@ import {
   Sparkles,
   UploadCloud,
   Eye,
-  Zap,
-  Car,
 } from 'lucide-react';
 
 const PRESET_PARKING_PHOTOS = [
@@ -59,8 +57,8 @@ export const CreateListingPage: React.FC = () => {
   ]);
 
   // Step 4: Pricing & Access Instructions
-  const [hourlyRate, setHourlyRate] = useState(7);
-  const [dailyMaxRate, setDailyMaxRate] = useState(38);
+  const [hourlyRate, setHourlyRate] = useState(60);
+  const [dailyMaxRate, setDailyMaxRate] = useState(350);
   const [accessInstructions, setAccessInstructions] = useState('Enter garage entrance on Howard St. Scan Parko QR code at the automated barrier or use gate code 5501#.');
   const [cancellationPolicy, setCancellationPolicy] = useState('Free cancellation up to 1 hour before arrival time.');
 
@@ -417,7 +415,7 @@ export const CreateListingPage: React.FC = () => {
                   Set your rates and arrival guide
                 </h2>
                 <p className="text-xs text-slate-500">
-                  Recommended rate for {neighborhood || 'Downtown'}: $6 – $10/hour.
+                  Recommended rate for {neighborhood || 'City Center'}: ₹50 – ₹100/hour.
                 </p>
               </div>
 
@@ -425,14 +423,14 @@ export const CreateListingPage: React.FC = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Hourly Rate ($/hr)
+                      Hourly Rate (₹/hr)
                     </label>
                     <div className="relative">
-                      <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-sm">$</span>
+                      <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-sm">₹</span>
                       <input
                         type="number"
-                        min="2"
-                        max="35"
+                        min="20"
+                        max="300"
                         required
                         value={hourlyRate}
                         onChange={(e) => setHourlyRate(Number(e.target.value))}
@@ -443,14 +441,14 @@ export const CreateListingPage: React.FC = () => {
 
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Daily Cap / Max ($)
+                      Daily Cap / Max (₹)
                     </label>
                     <div className="relative">
-                      <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-sm">$</span>
+                      <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-sm">₹</span>
                       <input
                         type="number"
-                        min="10"
-                        max="100"
+                        min="100"
+                        max="1500"
                         value={dailyMaxRate}
                         onChange={(e) => setDailyMaxRate(Number(e.target.value))}
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3.5 py-2.5 text-sm font-bold text-navy-900 outline-none focus:border-brand-500"
@@ -472,9 +470,26 @@ export const CreateListingPage: React.FC = () => {
                   />
                 </div>
 
-                <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600">
-                  <p className="font-semibold text-navy-900">Cancellation Policy:</p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">{cancellationPolicy}</p>
+                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1.5">
+                  <label htmlFor="cancellation-policy" className="font-semibold text-navy-900 block">
+                    Cancellation Policy
+                  </label>
+                  <select
+                    id="cancellation-policy"
+                    value={cancellationPolicy}
+                    onChange={(e) => setCancellationPolicy(e.target.value)}
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-navy-900 outline-none focus:border-brand-500"
+                  >
+                    <option value="Free cancellation up to 1 hour before arrival time.">
+                      Flexible: Free cancellation up to 1 hour before arrival
+                    </option>
+                    <option value="Free cancellation up to 24 hours before arrival time.">
+                      Standard: Free cancellation up to 24 hours before arrival
+                    </option>
+                    <option value="Non-refundable within 48 hours of scheduled booking.">
+                      Strict: Non-refundable within 48 hours
+                    </option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -573,7 +588,7 @@ export const CreateListingPage: React.FC = () => {
                 <div className="p-5 space-y-2">
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-bold text-brand-700 uppercase tracking-wider text-[11px]">{neighborhood}</span>
-                    <span className="font-extrabold text-navy-950 text-base">${hourlyRate}/hr</span>
+                    <span className="font-extrabold text-navy-950 text-base">₹{hourlyRate}/hr</span>
                   </div>
                   <h3 className="font-bold text-base text-navy-900">{title}</h3>
                   <p className="text-xs text-slate-500">{address}, {city} &bull; {nearbyLandmark}</p>
@@ -591,7 +606,7 @@ export const CreateListingPage: React.FC = () => {
               <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex items-start gap-2.5">
                 <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-bold">$1,000,000 Host Shield Protection Activated</p>
+                  <p className="font-bold">₹10,00,000 Host Shield Protection Activated</p>
                   <p className="text-[11px] text-emerald-700 mt-0.5">
                     Your property is covered for third-party liability and property damage during all active reservations.
                   </p>
@@ -605,7 +620,7 @@ export const CreateListingPage: React.FC = () => {
             {step > 1 ? (
               <button
                 type="button"
-                onClick={() => setStep((s) => (s - 1) as any)}
+                onClick={() => setStep((s) => (Math.max(1, s - 1)) as 1 | 2 | 3 | 4 | 5 | 6)}
                 className="py-2.5 px-4 rounded-xl border border-slate-200 text-xs font-bold text-navy-800 hover:bg-slate-50 flex items-center gap-1.5"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
@@ -618,7 +633,7 @@ export const CreateListingPage: React.FC = () => {
             {step < 6 ? (
               <button
                 type="button"
-                onClick={() => setStep((s) => (s + 1) as any)}
+                onClick={() => setStep((s) => (Math.min(6, s + 1)) as 1 | 2 | 3 | 4 | 5 | 6)}
                 className="py-2.5 px-5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-soft-sm flex items-center gap-1.5"
               >
                 <span>Continue</span>

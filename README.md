@@ -69,14 +69,41 @@ Built with **React**, **TypeScript**, **Tailwind CSS**, and **Vite**. Inspired b
 
 ## 🛠️ Tech Stack & Architecture
 
+### Frontend
 - **Framework**: React 18 + TypeScript + Vite 5
 - **Styling**: Tailwind CSS with custom mobility palette (deep navy `#0F172A`, emerald accent `#10B981` / `#059669`, warm neutrals)
 - **Icons**: Lucide React
 - **Routing**: React Router DOM v7
-- **State Management**:
-  - `ParkingContext`: Spaces list, bookings list, and favorited spot IDs with `localStorage` persistence.
-  - `AuthContext`: Active persona (`driver` vs `owner`) with 1-click persona switching.
-  - `ToastContext`: Floating notification system for booking updates, cancellations, and gate triggers.
+- **API Client**: Strongly-typed `src/services/api.ts` with Vite development proxy (`/api` &rarr; `http://localhost:5000`) and graceful fallback.
+
+### Backend (Production-Grade Node.js + Express API)
+- **Server**: Express 5 + TypeScript (`tsx`)
+- **Storage**: Atomic thread-safe JSON database with auto-seeding (`server/data/parko-db.json`)
+- **Middleware**: CORS, request duration logger, centralized error handling
+- **Testing**: Automated end-to-end integration test runner (`npm run test:api`)
+
+---
+
+## 📡 Backend API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/health` | Service status, uptime, and database records count |
+| `GET` | `/api/spaces` | Query spaces with multi-parameter filtering (`q`, `type`, `maxPrice`, `vehicleSize`, `amenities`, `sortBy`) |
+| `GET` | `/api/spaces/:id` | Retrieve single parking space details |
+| `POST` | `/api/spaces` | Create & publish a new parking space listing |
+| `PATCH` | `/api/spaces/:id/rate` | Adjust space hourly rate and daily maximum cap |
+| `PATCH` | `/api/spaces/:id/toggle` | Toggle listing live visibility (active / paused) |
+| `POST` | `/api/spaces/:id/reviews` | Submit verified driver review and recalculate rating |
+| `GET` | `/api/bookings` | List active, confirmed, and past reservations |
+| `GET` | `/api/bookings/:id` | Get booking pass, gate code, and digital QR seed |
+| `POST` | `/api/bookings` | Create verified reservation with 10% guarantee fee |
+| `POST` | `/api/bookings/:id/cancel` | Cancel reservation with 100% refund policy |
+| `POST` | `/api/bookings/:id/trigger-gate` | IoT Smart Gate Actuator simulator for verified vehicle |
+| `POST` | `/api/auth/login` | Driver / Owner persona authentication |
+| `PUT` | `/api/auth/vehicle` | Update primary vehicle make & license plate |
+| `GET` | `/api/metrics/owner` | Space host earnings, occupancy rate, and weekly payouts |
+| `GET` | `/api/metrics/platform` | Platform-wide parking metrics and stats |
 
 ---
 
@@ -95,11 +122,23 @@ cd Parko
 # 2. Install dependencies
 npm install
 
-# 3. Start development server
-npm run dev
+# 3. Option A: Run Fullstack (Backend + Frontend simultaneously)
+npm run dev:all
+
+# 3. Option B: Run separately
+npm run server    # Starts backend API on http://localhost:5000
+npm run dev       # Starts Vite frontend on http://localhost:5173
 ```
 
 Open [http://localhost:5173/](http://localhost:5173/) in your web browser.
+
+### Run Automated Backend API Tests
+
+```bash
+npm run test:api
+```
+
+Executes 10 automated integration tests covering health, listing discovery, booking creation, gate triggering, and cancellation.
 
 ### Production Build & Typecheck
 
@@ -107,4 +146,5 @@ Open [http://localhost:5173/](http://localhost:5173/) in your web browser.
 npm run build
 ```
 
-The production bundle is compiled into `dist/`.
+Compiles both frontend and backend TypeScript types and builds production static bundle in `dist/`.
+

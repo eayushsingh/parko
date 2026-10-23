@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="8" fill="#0F172A"/>
-  <rect x="2" y="2" width="28" height="28" rx="6" stroke="#059669" stroke-width="1.5" stroke-opacity="0.4"/>
-  <path d="M11 23V9H17C19.2091 9 21 10.7909 21 13C21 15.2091 19.2091 17 17 17H11" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="23" cy="9" r="2.5" fill="#10B981"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 56" fill="none">
+  <!-- Parko Green Map Pin Marker -->
+  <path d="M24 2C12.954 2 4 10.954 4 22C4 34.5 19.5 50.8 23.1 54.3C23.6 54.8 24.4 54.8 24.9 54.3C28.5 50.8 44 34.5 44 22C44 10.954 35.046 2 24 2Z" fill="#0E8345"/>
+  <!-- White Bold P -->
+  <path d="M18 13.5C18 12.67 18.67 12 19.5 12H26.5C30.64 12 34 15.36 34 19.5C34 23.64 30.64 27 26.5 27H22.5V33.5C22.5 34.33 21.83 35 21 35H19.5C18.67 35 18 34.33 18 33.5V13.5ZM22.5 16.5V22.5H26.5C28.16 22.5 29.5 21.16 29.5 19.5C29.5 17.84 28.16 16.5 26.5 16.5H22.5Z" fill="#FFFFFF"/>
 </svg>

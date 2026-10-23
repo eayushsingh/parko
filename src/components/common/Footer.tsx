@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Sparkles, MapPin, ArrowUpRight } from 'lucide-react';
+import { ShieldCheck, Sparkles, ArrowUpRight } from 'lucide-react';
+import { ParkoLogo } from './ParkoLogo';
 
 export const Footer: React.FC = () => {
   return (
@@ -10,16 +11,8 @@ export const Footer: React.FC = () => {
           
           {/* Brand Column */}
           <div className="lg:col-span-2 space-y-4">
-            <Link to="/" className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-brand-500 flex items-center justify-center text-navy-950 font-extrabold text-xl shadow-soft-sm">
-                P
-              </div>
-              <div className="flex flex-col">
-                <span className="font-extrabold text-xl text-white tracking-tight">parko</span>
-                <span className="text-[10px] font-semibold tracking-wider text-brand-400 uppercase -mt-1">
-                  Parking on Demand
-                </span>
-              </div>
+            <Link to="/" className="flex items-center group shrink-0" aria-label="Parko Home">
+              <ParkoLogo size="md" theme="dark" />
             </Link>
             
             <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
@@ -87,7 +80,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link to="/safety#host-guarantee" className="hover:text-white transition-colors">
-                  $1M Host Protection
+                  ₹10 Lakhs Host Protection
                 </Link>
               </li>
               <li>

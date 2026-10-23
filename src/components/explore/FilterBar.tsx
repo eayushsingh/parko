@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { ParkingType, VehicleSize } from '../../types';
 import {
   Search,
-  Calendar,
   Clock,
   SlidersHorizontal,
   X,
-  MapPin,
   Check,
   ChevronDown,
 } from 'lucide-react';
@@ -164,7 +161,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             <div className="relative">
               <select
                 value={filters.sortBy}
-                onChange={(e) => onFilterChange({ ...filters, sortBy: e.target.value as any })}
+                onChange={(e) => onFilterChange({ ...filters, sortBy: e.target.value as FilterState['sortBy'] })}
                 aria-label="Sort parking listings"
                 className="appearance-none bg-white text-xs font-semibold text-navy-800 border border-slate-200 rounded-xl px-3 py-2 pr-7 outline-none hover:border-slate-300 cursor-pointer focus:ring-2 focus:ring-brand-500/20"
               >
@@ -232,20 +229,20 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             <div>
               <div className="flex items-center justify-between text-xs font-semibold text-navy-900 mb-1.5">
                 <span>Maximum Hourly Rate</span>
-                <span className="text-brand-600 font-bold">${filters.maxPrice}/hr</span>
+                <span className="text-brand-600 font-bold">₹{filters.maxPrice}/hr</span>
               </div>
               <input
                 type="range"
-                min="4"
-                max="15"
-                step="1"
+                min="30"
+                max="250"
+                step="5"
                 value={filters.maxPrice}
                 onChange={(e) => onFilterChange({ ...filters, maxPrice: Number(e.target.value) })}
                 className="w-full accent-brand-600 h-1.5 bg-slate-200 rounded-lg cursor-pointer"
               />
               <div className="flex justify-between text-[11px] text-slate-400 mt-1">
-                <span>$4/hr</span>
-                <span>$15+/hr</span>
+                <span>₹30/hr</span>
+                <span>₹250+/hr</span>
               </div>
             </div>
 

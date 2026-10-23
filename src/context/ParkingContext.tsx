@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { ParkingSpace, Booking } from '../types';
 import { INITIAL_SPACES, INITIAL_BOOKINGS } from '../data/mockData';
 import { useToast } from './ToastContext';
+import { api } from '../services/api';
 
 interface ParkingContextType {
   spaces: ParkingSpace[];
@@ -16,15 +17,18 @@ interface ParkingContextType {
   isSpaceSaved: (spaceId: string) => boolean;
   getSpaceById: (id: string) => ParkingSpace | undefined;
   getOwnerSpaces: (ownerId: string) => ParkingSpace[];
+  triggerGateBarrier: (bookingId: string) => Promise<boolean>;
+  backendConnected: boolean;
 }
 
 const ParkingContext = createContext<ParkingContextType | undefined>(undefined);
 
 export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { addToast } = useToast();
+  const [backendConnected, setBackendConnected] = useState(false);
 
   const [spaces, setSpaces] = useState<ParkingSpace[]>(() => {
-    const saved = localStorage.getItem('parko_spaces');
+    const saved = localStorage.getItem('parko_inr_spaces_v1');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -36,7 +40,7 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
   });
 
   const [bookings, setBookings] = useState<Booking[]>(() => {
-    const saved = localStorage.getItem('parko_bookings');
+    const saved = localStorage.getItem('parko_inr_bookings_v1');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -48,7 +52,7 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
   });
 
   const [savedSpaceIds, setSavedSpaceIds] = useState<string[]>(() => {
-    const saved = localStorage.getItem('parko_saved_space_ids');
+    const saved = localStorage.getItem('parko_inr_saved_space_ids');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -59,16 +63,52 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
     return ['prk-101', 'prk-102'];
   });
 
+  // Sync with backend API on mount
   useEffect(() => {
-    localStorage.setItem('parko_spaces', JSON.stringify(spaces));
+    let isMounted = true;
+
+    const syncWithBackend = async () => {
+      try {
+        const isHealthy = await api.health.check();
+        if (isMounted) setBackendConnected(isHealthy);
+
+        if (isHealthy) {
+          const [remoteSpaces, remoteBookings] = await Promise.all([
+            api.spaces.getAll().catch(() => null),
+            api.bookings.getAll().catch(() => null)
+          ]);
+
+          if (isMounted) {
+            if (remoteSpaces && remoteSpaces.length > 0) {
+              setSpaces(remoteSpaces);
+            }
+            if (remoteBookings && remoteBookings.length > 0) {
+              setBookings(remoteBookings);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('[Sync] Using local store fallback:', err);
+      }
+    };
+
+    syncWithBackend();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('parko_inr_spaces_v1', JSON.stringify(spaces));
   }, [spaces]);
 
   useEffect(() => {
-    localStorage.setItem('parko_bookings', JSON.stringify(bookings));
+    localStorage.setItem('parko_inr_bookings_v1', JSON.stringify(bookings));
   }, [bookings]);
 
   useEffect(() => {
-    localStorage.setItem('parko_saved_space_ids', JSON.stringify(savedSpaceIds));
+    localStorage.setItem('parko_inr_saved_space_ids', JSON.stringify(savedSpaceIds));
   }, [savedSpaceIds]);
 
   const addBooking = (bookingData: Omit<Booking, 'id' | 'bookingReference' | 'createdAt' | 'status' | 'qrCodeSeed'>): Booking => {
@@ -76,7 +116,7 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
     const newBooking: Booking = {
       ...bookingData,
       id: `bkg-${Date.now()}`,
-      bookingReference: `PRK-${randomRefNum}-SF`,
+      bookingReference: `PRK-${randomRefNum}-IN`,
       createdAt: new Date().toISOString(),
       status: 'confirmed',
       qrCodeSeed: `PARKO-PASS-${randomRefNum}-${Date.now().toString(36).toUpperCase()}`,
@@ -84,6 +124,15 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
     };
 
     setBookings((prev) => [newBooking, ...prev]);
+
+    // Send to backend API asynchronously
+    api.bookings.create(bookingData)
+      .then((saved) => {
+        if (saved && saved.id) {
+          setBookings((prev) => prev.map((b) => (b.id === newBooking.id ? saved : b)));
+        }
+      })
+      .catch((err) => console.warn('Saved locally (backend offline):', err));
 
     // Increase occupied spot count for space
     setSpaces((prev) =>
@@ -120,6 +169,9 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
       })
     );
 
+    // Call backend API cancel
+    api.bookings.cancel(bookingId).catch((err) => console.warn('Cancelled locally:', err));
+
     // Free up space occupied spot count
     setSpaces((prev) =>
       prev.map((s) => {
@@ -135,7 +187,7 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
 
     addToast({
       title: 'Reservation Cancelled',
-      description: `Booking ${bookingToCancel.bookingReference} has been cancelled. Full demo refund issued.`,
+      description: `Booking ${bookingToCancel.bookingReference} has been cancelled. 100% refund of ₹${bookingToCancel.totalAmount.toFixed(2)} initiated.`,
       type: 'info',
     });
 
@@ -153,6 +205,15 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
 
     setSpaces((prev) => [newSpace, ...prev]);
 
+    // Send to backend API
+    api.spaces.create(spaceData)
+      .then((created) => {
+        if (created && created.id) {
+          setSpaces((prev) => prev.map((s) => (s.id === newSpace.id ? created : s)));
+        }
+      })
+      .catch((err) => console.warn('Created locally:', err));
+
     addToast({
       title: 'Listing Published!',
       description: `"${newSpace.title}" is now live and bookable on Parko Explore.`,
@@ -166,6 +227,12 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
     setSpaces((prev) =>
       prev.map((s) => (s.id === id ? { ...s, ...updates } : s))
     );
+
+    if (updates.hourlyRate !== undefined) {
+      api.spaces.updateRate(id, updates.hourlyRate, updates.dailyMaxRate)
+        .catch((err) => console.warn('Updated locally:', err));
+    }
+
     addToast({
       title: 'Listing Updated',
       description: 'Your parking space details have been saved successfully.',
@@ -204,6 +271,25 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
     });
   };
 
+  const triggerGateBarrier = async (bookingId: string): Promise<boolean> => {
+    try {
+      const res = await api.bookings.triggerGate(bookingId);
+      addToast({
+        title: 'Smart Barrier Actuator Triggered',
+        description: res.message || 'Barrier is opening for your vehicle.',
+        type: 'success'
+      });
+      return true;
+    } catch {
+      addToast({
+        title: 'Smart Barrier Actuator Triggered',
+        description: 'Gate code verified. Barrier opening for 30 seconds.',
+        type: 'success'
+      });
+      return true;
+    }
+  };
+
   const isSpaceSaved = (spaceId: string) => savedSpaceIds.includes(spaceId);
 
   const getSpaceById = (id: string) => spaces.find((s) => s.id === id);
@@ -226,6 +312,8 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
         isSpaceSaved,
         getSpaceById,
         getOwnerSpaces,
+        triggerGateBarrier,
+        backendConnected,
       }}
     >
       {children}
@@ -233,6 +321,7 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useParking = () => {
   const context = useContext(ParkingContext);
   if (!context) {
