@@ -28,7 +28,7 @@ export const HomePage: React.FC = () => {
   const { spaces } = useParking();
 
   // Search Bar State
-  const [searchLocation, setSearchLocation] = useState('San Francisco, CA');
+  const [searchLocation, setSearchLocation] = useState('Bengaluru');
   const [searchDate, setSearchDate] = useState('Today');
   const [arrivalTime, setArrivalTime] = useState('09:00');
   const [departureTime, setDepartureTime] = useState('17:00');
@@ -199,26 +199,26 @@ export const HomePage: React.FC = () => {
                   <span className="font-semibold text-slate-400 text-[11px] uppercase tracking-wider">Popular hubs:</span>
                   <button
                     type="button"
-                    onClick={() => { setSearchLocation('Financial District'); navigate('/explore?q=Financial'); }}
+                    onClick={() => { setSearchLocation('Indiranagar'); navigate('/explore?q=Indiranagar'); }}
                     className="hover:text-emerald-600 font-medium hover:underline text-slate-600 transition-colors"
                   >
-                    Financial District
+                    Indiranagar
                   </button>
                   <span className="text-slate-300">&bull;</span>
                   <button
                     type="button"
-                    onClick={() => { setSearchLocation('SoMa'); navigate('/explore?q=SoMa'); }}
+                    onClick={() => { setSearchLocation('BKC'); navigate('/explore?q=BKC'); }}
                     className="hover:text-emerald-600 font-medium hover:underline text-slate-600 transition-colors"
                   >
-                    SoMa
+                    BKC Mumbai
                   </button>
                   <span className="text-slate-300">&bull;</span>
                   <button
                     type="button"
-                    onClick={() => { setSearchLocation('Union Square'); navigate('/explore?q=Union'); }}
+                    onClick={() => { setSearchLocation('Connaught Place'); navigate('/explore?q=Connaught'); }}
                     className="hover:text-emerald-600 font-medium hover:underline text-slate-600 transition-colors"
                   >
-                    Union Square
+                    Connaught Place
                   </button>
                 </div>
                 <div className="flex items-center gap-4 font-semibold text-emerald-800 text-xs">

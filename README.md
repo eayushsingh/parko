@@ -63,7 +63,7 @@ Built with **React**, **TypeScript**, **Tailwind CSS**, and **Vite**. Inspired b
 - Transparent distinction between the interactive prototype environment and production hardware/payment integrations.
 
 ### 9. Interactive Prototype & Persona Switcher
-- A persistent prototype banner allows switching between **Driver Mode (Alexander Hayes)** and **Owner Mode (Marcus Vance)** at any time.
+- A persistent prototype banner allows switching between **Driver Mode (Arjun Sharma)** and **Owner Mode (Vikram Mehta)** at any time.
 
 ---
 

@@ -8,7 +8,7 @@ import {
   MapPin,
   Building,
   ShieldCheck,
-  DollarSign,
+  IndianRupee,
   Camera,
   CheckCircle2,
   ArrowRight,
@@ -35,14 +35,14 @@ export const CreateListingPage: React.FC = () => {
 
   // Form State
   // Step 1: Location
-  const [address, setAddress] = useState('550 Howard St');
-  const [city, setCity] = useState('San Francisco');
-  const [neighborhood, setNeighborhood] = useState('SoMa');
-  const [nearbyLandmark, setNearbyLandmark] = useState('1 min walk to Salesforce Tower');
+  const [address, setAddress] = useState('144 MG Road');
+  const [city, setCity] = useState('Bengaluru');
+  const [neighborhood, setNeighborhood] = useState('Indiranagar / MG Road');
+  const [nearbyLandmark, setNearbyLandmark] = useState('2 min walk to Trinity Metro Station');
 
   // Step 2: Space Details
-  const [title, setTitle] = useState('Modern Transbay Garage Stall w/ Level 2 EV');
-  const [description, setDescription] = useState('Clean, secure underground parking bay with 24/7 video monitoring and high clearance suitable for SUVs.');
+  const [title, setTitle] = useState('Premium MG Road Multi-Tier Garage Stall w/ Fast EV');
+  const [description, setDescription] = useState('Clean, secure underground parking bay with 24/7 video monitoring, RFID barrier access, and high clearance suitable for SUVs.');
   const [type, setType] = useState<ParkingType>('Garage');
   const [totalSpots, setTotalSpots] = useState(2);
   const [vehicleCompatibility, setVehicleCompatibility] = useState<VehicleSize[]>(['Compact', 'Sedan', 'SUV']);
@@ -233,7 +233,7 @@ export const CreateListingPage: React.FC = () => {
                       required
                       value={neighborhood}
                       onChange={(e) => setNeighborhood(e.target.value)}
-                      placeholder="e.g. SoMa / Financial District"
+                      placeholder="e.g. Indiranagar / BKC / Connaught Place"
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-navy-900 outline-none focus:border-brand-500"
                     />
                   </div>
@@ -408,7 +408,7 @@ export const CreateListingPage: React.FC = () => {
             <div className="space-y-5 animate-in fade-in">
               <div className="space-y-1">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-brand-600 flex items-center gap-1">
-                  <DollarSign className="w-3.5 h-3.5" />
+                  <IndianRupee className="w-3.5 h-3.5" />
                   Step 4: Pricing & Access Instructions
                 </span>
                 <h2 className="text-2xl font-extrabold text-navy-950 tracking-tight">

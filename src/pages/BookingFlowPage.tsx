@@ -36,19 +36,20 @@ export const BookingFlowPage: React.FC = () => {
   const [startTime, setStartTime] = useState(searchParams.get('in') || '09:00');
   const [endTime, setEndTime] = useState(searchParams.get('out') || '13:00');
 
-  const [driverName, setDriverName] = useState(user.name || 'Alexander Hayes');
-  const [driverEmail, setDriverEmail] = useState(user.email || 'alex.hayes@example.com');
-  const [driverPhone, setDriverPhone] = useState(user.phone || '+1 (415) 555-0192');
-  const [vehiclePlate, setVehiclePlate] = useState(user.defaultVehicle?.licensePlate || '7XYZ892');
-  const [vehicleModel, setVehicleModel] = useState(user.defaultVehicle?.makeModel || 'Tesla Model 3');
+  const [driverName, setDriverName] = useState(user.name || 'Arjun Sharma');
+  const [driverEmail, setDriverEmail] = useState(user.email || 'arjun.sharma@gmail.com');
+  const [driverPhone, setDriverPhone] = useState(user.phone || '+91 98765 43210');
+  const [vehiclePlate, setVehiclePlate] = useState(user.defaultVehicle?.licensePlate || 'KA 01 MJ 4829');
+  const [vehicleModel, setVehicleModel] = useState(user.defaultVehicle?.makeModel || 'Tata Nexon EV (Dark Edition)');
 
   // Simulated License Upload
-  const [licenseFileName, setLicenseFileName] = useState<string | null>('ca_driver_license_demo.jpg');
+  const [licenseFileName, setLicenseFileName] = useState<string | null>('ind_driver_license_demo.jpg');
   const [licenseFileSize, setLicenseFileSize] = useState<string | null>('1.8 MB');
   const [uploadError, setUploadError] = useState<string | null>(null);
 
   // Payment Selection
-  const [paymentMethod, setPaymentMethod] = useState<'Credit Card' | 'Apple Pay' | 'Google Pay'>('Credit Card');
+  const [paymentMethod, setPaymentMethod] = useState<'Credit Card' | 'Apple Pay' | 'Google Pay' | 'UPI'>('UPI');
+  const [upiId, setUpiId] = useState('arjun.sharma@okhdfcbank');
   const [cardNumber, setCardNumber] = useState('•••• •••• •••• 4242');
   const [cardExpiry, setCardExpiry] = useState('12/28');
   const [cardCvc, setCardCvc] = useState('•••');
@@ -471,13 +472,13 @@ export const BookingFlowPage: React.FC = () => {
                 </div>
 
                 {/* Payment Options */}
-                <div className="grid grid-cols-3 gap-2.5">
-                  {(['Credit Card', 'Apple Pay', 'Google Pay'] as const).map((method) => (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {(['UPI', 'Credit Card', 'Google Pay', 'Apple Pay'] as const).map((method) => (
                     <button
                       key={method}
                       type="button"
                       onClick={() => setPaymentMethod(method)}
-                      className={`p-3 rounded-xl text-xs font-bold border text-center transition-all ${
+                      className={`p-2.5 rounded-xl text-xs font-bold border text-center transition-all ${
                         paymentMethod === method
                           ? 'bg-navy-900 text-white border-navy-900 shadow-soft-sm'
                           : 'bg-white text-navy-700 border-slate-200 hover:bg-slate-50'
@@ -487,6 +488,26 @@ export const BookingFlowPage: React.FC = () => {
                     </button>
                   ))}
                 </div>
+
+                {paymentMethod === 'UPI' && (
+                  <div className="space-y-3 pt-2">
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Virtual Payment Address / UPI ID (GPay / PhonePe / Paytm)
+                      </label>
+                      <input
+                        type="text"
+                        value={upiId}
+                        onChange={(e) => setUpiId(e.target.value)}
+                        placeholder="mobile@upi or username@bank"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-mono font-semibold text-navy-900 outline-none"
+                      />
+                    </div>
+                    <p className="text-[11px] text-emerald-700 font-medium bg-emerald-50 border border-emerald-200/80 rounded-xl px-3 py-2">
+                      ⚡ Instant UPI verification active. You will receive an authorization prompt on your UPI app.
+                    </p>
+                  </div>
+                )}
 
                 {paymentMethod === 'Credit Card' && (
                   <div className="space-y-3 pt-2">

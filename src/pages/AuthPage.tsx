@@ -64,7 +64,7 @@ export const AuthPage: React.FC = () => {
     loginAsDriver();
     addToast({
       title: 'Demo Driver Active',
-      description: 'Loaded Alexander Hayes profile with active bookings.',
+      description: 'Loaded Arjun Sharma profile with active bookings.',
       type: 'info',
     });
     navigate('/dashboard/driver');
@@ -74,7 +74,7 @@ export const AuthPage: React.FC = () => {
     loginAsOwner();
     addToast({
       title: 'Demo Owner Active',
-      description: 'Loaded Marcus Vance profile with parking listings & earnings.',
+      description: 'Loaded Vikram Mehta profile with parking listings & earnings.',
       type: 'info',
     });
     navigate('/dashboard/owner');
@@ -116,7 +116,7 @@ export const AuthPage: React.FC = () => {
               <Car className="w-4 h-4 text-brand-400 shrink-0" />
               <div className="min-w-0">
                 <p className="text-white truncate">Demo Driver</p>
-                <p className="text-[10px] text-slate-400">Alexander H.</p>
+                <p className="text-[10px] text-slate-400">Arjun S.</p>
               </div>
             </button>
             <button
@@ -127,7 +127,7 @@ export const AuthPage: React.FC = () => {
               <Building className="w-4 h-4 text-brand-400 shrink-0" />
               <div className="min-w-0">
                 <p className="text-white truncate">Demo Owner</p>
-                <p className="text-[10px] text-slate-400">Marcus V.</p>
+                <p className="text-[10px] text-slate-400">Vikram M.</p>
               </div>
             </button>
           </div>

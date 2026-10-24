@@ -28,7 +28,7 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
   const [backendConnected, setBackendConnected] = useState(false);
 
   const [spaces, setSpaces] = useState<ParkingSpace[]>(() => {
-    const saved = localStorage.getItem('parko_inr_spaces_v1');
+    const saved = localStorage.getItem('parko_india_spaces_v2');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -40,7 +40,7 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
   });
 
   const [bookings, setBookings] = useState<Booking[]>(() => {
-    const saved = localStorage.getItem('parko_inr_bookings_v1');
+    const saved = localStorage.getItem('parko_india_bookings_v2');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -52,7 +52,7 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
   });
 
   const [savedSpaceIds, setSavedSpaceIds] = useState<string[]>(() => {
-    const saved = localStorage.getItem('parko_inr_saved_space_ids');
+    const saved = localStorage.getItem('parko_india_saved_ids_v2');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -100,15 +100,15 @@ export const ParkingProvider: React.FC<{ children: ReactNode }> = ({ children })
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('parko_inr_spaces_v1', JSON.stringify(spaces));
+    localStorage.setItem('parko_india_spaces_v2', JSON.stringify(spaces));
   }, [spaces]);
 
   useEffect(() => {
-    localStorage.setItem('parko_inr_bookings_v1', JSON.stringify(bookings));
+    localStorage.setItem('parko_india_bookings_v2', JSON.stringify(bookings));
   }, [bookings]);
 
   useEffect(() => {
-    localStorage.setItem('parko_inr_saved_space_ids', JSON.stringify(savedSpaceIds));
+    localStorage.setItem('parko_india_saved_ids_v2', JSON.stringify(savedSpaceIds));
   }, [savedSpaceIds]);
 
   const addBooking = (bookingData: Omit<Booking, 'id' | 'bookingReference' | 'createdAt' | 'status' | 'qrCodeSeed'>): Booking => {

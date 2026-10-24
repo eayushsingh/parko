@@ -72,7 +72,7 @@ export interface Booking {
   subtotal: number;
   serviceFee: number;
   totalAmount: number;
-  paymentMethod: 'Credit Card' | 'Apple Pay' | 'Google Pay';
+  paymentMethod: 'Credit Card' | 'Apple Pay' | 'Google Pay' | 'UPI';
   status: BookingStatus;
   createdAt: string;
   qrCodeSeed: string;

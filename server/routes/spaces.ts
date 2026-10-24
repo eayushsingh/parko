@@ -149,7 +149,7 @@ router.post('/', (req: Request, res: Response) => {
       title: title.trim(),
       description: (description || 'Convenient, secure parking bay managed via Parko.').trim(),
       address: address.trim(),
-      city: (city || 'San Francisco').trim(),
+      city: (city || 'Bengaluru').trim(),
       neighborhood: (neighborhood || 'Downtown Metro').trim(),
       nearbyLandmark: (nearbyLandmark || 'Near city center & transit').trim(),
       type: (type as ParkingType) || 'Driveway',
@@ -167,7 +167,7 @@ router.post('/', (req: Request, res: Response) => {
         ? amenities
         : ['CCTV 24/7', 'Covered Parking', '24/7 Access'],
       ownerId: ownerId || 'own-01',
-      ownerName: ownerName || 'Alexander Hayes',
+      ownerName: ownerName || 'Arjun Sharma',
       ownerAvatar: ownerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
       ownerResponseTime: '< 10 minutes',
       ownerVerified: true,
@@ -175,8 +175,8 @@ router.post('/', (req: Request, res: Response) => {
       cancellationPolicy: (cancellationPolicy || 'Free cancellation up to 1 hour before scheduled arrival time.').trim(),
       availableNow: true,
       coordinates: {
-        lat: 37.7850 + (Math.random() - 0.5) * 0.03,
-        lng: -122.4050 + (Math.random() - 0.5) * 0.03,
+        lat: 12.9716 + (Math.random() - 0.5) * 0.05,
+        lng: 77.5946 + (Math.random() - 0.5) * 0.05,
         xPercent: Math.floor(25 + Math.random() * 50),
         yPercent: Math.floor(25 + Math.random() * 50)
       },

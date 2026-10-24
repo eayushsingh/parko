@@ -8,7 +8,7 @@ import {
   Building,
   PlusCircle,
   TrendingUp,
-  DollarSign,
+  IndianRupee,
   Calendar,
   Eye,
   Trash2,
@@ -31,7 +31,7 @@ export const OwnerDashboardPage: React.FC = () => {
   
   // Rate Edit Modal
   const [editingSpace, setEditingSpace] = useState<ParkingSpace | null>(null);
-  const [newRate, setNewRate] = useState<number>(8);
+  const [newRate, setNewRate] = useState<number>(80);
 
   // Listing Delete Confirm
   const [deletingSpaceId, setDeletingSpaceId] = useState<string | null>(null);
@@ -198,7 +198,7 @@ export const OwnerDashboardPage: React.FC = () => {
                   : 'border-transparent text-slate-500 hover:text-navy-900'
               }`}
             >
-              <DollarSign className="w-3.5 h-3.5" />
+              <IndianRupee className="w-3.5 h-3.5" />
               <span>Earnings & Payout Statement</span>
             </button>
           </div>

@@ -64,9 +64,10 @@ export const ExplorePage: React.FC = () => {
           const q = filters.searchQuery.toLowerCase();
           const matchTitle = space.title.toLowerCase().includes(q);
           const matchAddress = space.address.toLowerCase().includes(q);
+          const matchCity = space.city.toLowerCase().includes(q);
           const matchNeighborhood = space.neighborhood.toLowerCase().includes(q);
           const matchLandmark = space.nearbyLandmark.toLowerCase().includes(q);
-          if (!matchTitle && !matchAddress && !matchNeighborhood && !matchLandmark) {
+          if (!matchTitle && !matchAddress && !matchCity && !matchNeighborhood && !matchLandmark) {
             return false;
           }
         }
@@ -130,7 +131,7 @@ export const ExplorePage: React.FC = () => {
           <h1 className="text-xl sm:text-2xl font-extrabold text-navy-950 tracking-tight">
             {filters.searchQuery
               ? `Parking spots near "${filters.searchQuery}"`
-              : 'Available parking spots in San Francisco'}
+              : 'Available parking spots across India'}
           </h1>
           <span className="text-xs text-slate-500 font-medium">
             {filteredSpaces.length} spots available

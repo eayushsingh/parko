@@ -23,7 +23,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   });
 
   const [user, setUser] = useState<UserProfile>(() => {
-    const savedUser = localStorage.getItem('parko_user_profile');
+    const savedUser = localStorage.getItem('parko_india_user_profile_v2');
     if (savedUser) {
       try {
         return JSON.parse(savedUser);
@@ -36,7 +36,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     localStorage.setItem('parko_active_role', role);
-    localStorage.setItem('parko_user_profile', JSON.stringify(user));
+    localStorage.setItem('parko_india_user_profile_v2', JSON.stringify(user));
   }, [role, user]);
 
   const switchRole = (newRole: UserRole) => {

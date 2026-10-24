@@ -32,8 +32,8 @@ export const DriverDashboardPage: React.FC = () => {
 
   // Vehicle edit state
   const [isEditingVehicle, setIsEditingVehicle] = useState(false);
-  const [vehicleMake, setVehicleMake] = useState(user.defaultVehicle?.makeModel || 'Tesla Model 3');
-  const [vehiclePlate, setVehiclePlate] = useState(user.defaultVehicle?.licensePlate || '7XYZ892');
+  const [vehicleMake, setVehicleMake] = useState(user.defaultVehicle?.makeModel || 'Tata Nexon EV (Dark Edition)');
+  const [vehiclePlate, setVehiclePlate] = useState(user.defaultVehicle?.licensePlate || 'KA 01 MJ 4829');
 
   const upcomingBookings = bookings.filter(
     (b) => b.status === 'confirmed' || b.status === 'active'
@@ -415,12 +415,12 @@ export const DriverDashboardPage: React.FC = () => {
                   <div className="flex justify-between">
                     <span className="text-slate-500">License Plate</span>
                     <span className="font-mono font-black text-brand-700 tracking-wider">
-                      {user.defaultVehicle?.licensePlate || '7XYZ892'}
+                      {user.defaultVehicle?.licensePlate || 'KA 01 MJ 4829'}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">Registration State</span>
-                    <span className="font-semibold text-navy-900">California</span>
+                    <span className="font-semibold text-navy-900">{user.defaultVehicle?.state || 'Karnataka'}</span>
                   </div>
                 </div>
               ) : (

@@ -89,7 +89,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search neighborhood, street, or landmark (e.g., SoMa, Montgomery)..."
+                placeholder="Search Indian city, area, or landmark (e.g., Indiranagar, BKC, Connaught Place)..."
                 value={filters.searchQuery}
                 onChange={(e) => onFilterChange({ ...filters, searchQuery: e.target.value })}
                 className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all placeholder:text-slate-400 text-navy-900"

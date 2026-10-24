@@ -24,7 +24,7 @@ export const Footer: React.FC = () => {
                 <Sparkles className="w-3.5 h-3.5" />
                 Mobility-Tech Prototype
               </span>
-              <span>San Francisco, CA</span>
+              <span>Bengaluru • Mumbai • Delhi NCR</span>
             </div>
           </div>
 
