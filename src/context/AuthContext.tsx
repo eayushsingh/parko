@@ -2,6 +2,12 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { UserProfile, UserRole } from '../types';
 import { DEMO_DRIVER_PROFILE, DEMO_OWNER_PROFILE } from '../data/mockData';
 import { api } from '../services/api';
+import {
+  signInWithGoogle as firebaseSignInWithGoogle,
+  logoutFirebase,
+  onAuthStateChanged,
+  auth,
+} from '../services/firebase';
 
 interface AuthContextType {
   user: UserProfile;
@@ -10,8 +16,10 @@ interface AuthContextType {
   loginAsDriver: () => void;
   loginAsOwner: () => void;
   updateUser: (updates: Partial<UserProfile>) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   login: (email: string, role: UserRole, name?: string) => void;
+  loginWithGoogle: (role?: UserRole) => Promise<UserProfile>;
+  isFirebaseAuthenticated: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -21,6 +29,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const savedRole = localStorage.getItem('parko_active_role') as UserRole;
     return savedRole === 'owner' ? 'owner' : 'driver';
   });
+
+  const [isFirebaseAuthenticated, setIsFirebaseAuthenticated] = useState<boolean>(false);
 
   const [user, setUser] = useState<UserProfile>(() => {
     const savedUser = localStorage.getItem('parko_india_user_profile_v2');
@@ -39,12 +49,28 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.setItem('parko_india_user_profile_v2', JSON.stringify(user));
   }, [role, user]);
 
+  // Listen to Firebase Auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (fbUser) => {
+      if (fbUser) {
+        setIsFirebaseAuthenticated(true);
+      } else {
+        setIsFirebaseAuthenticated(false);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
   const switchRole = (newRole: UserRole) => {
     setRole(newRole);
-    if (newRole === 'owner') {
-      setUser(DEMO_OWNER_PROFILE);
+    if (!isFirebaseAuthenticated) {
+      if (newRole === 'owner') {
+        setUser(DEMO_OWNER_PROFILE);
+      } else {
+        setUser(DEMO_DRIVER_PROFILE);
+      }
     } else {
-      setUser(DEMO_DRIVER_PROFILE);
+      setUser((prev) => ({ ...prev, role: newRole }));
     }
   };
 
@@ -58,6 +84,39 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setUser(DEMO_OWNER_PROFILE);
   };
 
+  /**
+   * Real Google Authentication via Firebase
+   */
+  const loginWithGoogle = async (selectedRole: UserRole = 'driver'): Promise<UserProfile> => {
+    const fbUser = await firebaseSignInWithGoogle();
+    
+    const googleProfile: UserProfile = {
+      id: `usr-google-${fbUser.uid.slice(0, 10)}`,
+      name: fbUser.displayName || 'Google User',
+      email: fbUser.email || 'user@gmail.com',
+      role: selectedRole,
+      avatar: fbUser.photoURL || (selectedRole === 'owner' ? DEMO_OWNER_PROFILE.avatar : DEMO_DRIVER_PROFILE.avatar),
+      phone: fbUser.phoneNumber || '+91 98765 43210',
+      memberSince: 'October 2026',
+      isVerified: true,
+      defaultVehicle: {
+        makeModel: 'Tata Nexon EV (Dark Edition)',
+        licensePlate: 'KA 01 MJ 4829',
+        state: 'Karnataka'
+      }
+    };
+
+    setRole(selectedRole);
+    setUser(googleProfile);
+    setIsFirebaseAuthenticated(true);
+
+    // Sync with backend API asynchronously
+    api.auth.login(googleProfile.email, selectedRole)
+      .catch((err) => console.warn('Logged in locally (backend offline):', err));
+
+    return googleProfile;
+  };
+
   const login = (email: string, selectedRole: UserRole, name?: string) => {
     const newUser: UserProfile = {
       id: `usr-${Date.now()}`,
@@ -69,9 +128,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       memberSince: 'October 2026',
       isVerified: true,
       defaultVehicle: selectedRole === 'driver' ? {
-        makeModel: 'Tesla Model 3 (Midnight Silver)',
-        licensePlate: 'MH 02 CZ 8921',
-        state: 'Maharashtra'
+        makeModel: 'Tata Nexon EV (Dark Edition)',
+        licensePlate: 'KA 01 MJ 4829',
+        state: 'Karnataka'
       } : undefined
     };
     setRole(selectedRole);
@@ -96,7 +155,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     });
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await logoutFirebase();
+    } catch (e) {
+      console.warn('Firebase signout error:', e);
+    }
+    setIsFirebaseAuthenticated(false);
     setRole('driver');
     setUser(DEMO_DRIVER_PROFILE);
   };
@@ -112,6 +177,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         updateUser,
         logout,
         login,
+        loginWithGoogle,
+        isFirebaseAuthenticated,
       }}
     >
       {children}
