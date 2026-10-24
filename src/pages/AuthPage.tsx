@@ -80,7 +80,14 @@ export const AuthPage: React.FC = () => {
     } catch (err: unknown) {
       const errorMsg = err instanceof Error ? err.message : 'Google sign-in was interrupted. Please try again.';
       console.error('Google Sign-In error:', err);
-      if (!errorMsg.includes('popup-closed-by-user')) {
+      if (errorMsg.includes('unauthorized-domain')) {
+        setError('This domain is not yet authorized in Firebase. In Firebase Console → Authentication → Settings → Authorized Domains, add your Vercel domain.');
+        addToast({
+          title: 'Vercel Domain Not Authorized in Firebase',
+          description: 'Please add your Vercel deployment URL to Firebase Console > Authentication > Settings > Authorized Domains.',
+          type: 'error',
+        });
+      } else if (!errorMsg.includes('popup-closed-by-user')) {
         setError('Google sign-in failed. Please verify popup permissions and try again.');
         addToast({
           title: 'Sign-In Interrupted',

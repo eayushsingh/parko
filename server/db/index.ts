@@ -17,44 +17,52 @@ class JsonDatabase {
   public init(): void {
     if (this.isInitialized) return;
 
-    const dir = path.dirname(this.filePath);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
+    try {
+      const dir = path.dirname(this.filePath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
 
-    if (fs.existsSync(this.filePath)) {
-      try {
-        const raw = fs.readFileSync(this.filePath, 'utf-8');
-        const parsed = JSON.parse(raw);
-        if (parsed.spaces && Array.isArray(parsed.spaces) && parsed.bookings && Array.isArray(parsed.bookings)) {
-          this.data = parsed;
-          console.log(`[DB] Loaded existing database with ${this.data.spaces.length} spaces and ${this.data.bookings.length} bookings.`);
-        } else {
-          console.warn('[DB] Existing DB file format invalid. Re-seeding database.');
+      if (fs.existsSync(this.filePath)) {
+        try {
+          const raw = fs.readFileSync(this.filePath, 'utf-8');
+          const parsed = JSON.parse(raw);
+          if (parsed.spaces && Array.isArray(parsed.spaces) && parsed.bookings && Array.isArray(parsed.bookings)) {
+            this.data = parsed;
+            console.log(`[DB] Loaded existing database with ${this.data.spaces.length} spaces and ${this.data.bookings.length} bookings.`);
+          } else {
+            console.warn('[DB] Existing DB file format invalid. Re-seeding database.');
+            this.saveAtomic();
+          }
+        } catch (err) {
+          console.error('[DB] Failed to read database file, re-initializing with seed data:', err);
           this.saveAtomic();
         }
-      } catch (err) {
-        console.error('[DB] Failed to read database file, re-initializing with seed data:', err);
+      } else {
+        console.log('[DB] No database file found. Seeding new database at:', this.filePath);
         this.saveAtomic();
       }
-    } else {
-      console.log('[DB] No database file found. Seeding new database at:', this.filePath);
-      this.saveAtomic();
+    } catch (err) {
+      console.warn('[DB] Non-critical filesystem init error, using in-memory dataset:', err);
     }
 
     this.isInitialized = true;
   }
 
   private saveAtomic(): void {
-    const dir = path.dirname(this.filePath);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
+    try {
+      const dir = path.dirname(this.filePath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
 
-    const tempPath = `${this.filePath}.tmp.${Date.now()}`;
-    const payload = JSON.stringify(this.data, null, 2);
-    fs.writeFileSync(tempPath, payload, 'utf-8');
-    fs.renameSync(tempPath, this.filePath);
+      const tempPath = `${this.filePath}.tmp.${Date.now()}`;
+      const payload = JSON.stringify(this.data, null, 2);
+      fs.writeFileSync(tempPath, payload, 'utf-8');
+      fs.renameSync(tempPath, this.filePath);
+    } catch (err) {
+      console.warn('[DB] Non-critical filesystem write warning (running in serverless or read-only mode):', err);
+    }
   }
 
   public getSnapshot(): DatabaseSchema {
