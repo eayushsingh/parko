@@ -6,6 +6,72 @@ Built with **React**, **TypeScript**, **Tailwind CSS**, and **Vite**. Inspired b
 
 ---
 
+## 🧠 How Parko Works (Complete System Walkthrough)
+
+Parko is a two-sided mobility network designed to eliminate urban parking congestion in Indian metros (Bengaluru, Mumbai, Delhi-NCR, Pune, Hyderabad). It connects urban drivers needing guaranteed parking with residential, commercial, and private property owners who have empty stalls, driveways, or carports.
+
+For a full technical deep dive, see the dedicated [HOW_IT_WORKS.md](file:///Users/ayush/Desktop/Parko/HOW_IT_WORKS.md).
+
+```mermaid
+flowchart TD
+    subgraph Drivers["🚗 Driver Journey"]
+        D1["1. Search Location & GPS on Leaflet Map"] --> D2["2. Select Stall & Reserve with 1-Tap UPI"]
+        D2 --> D3["3. Receive Digital Pass & 4-Digit Keypad PIN"]
+        D3 --> D4["4. Scan at Gate Barrier & Auto-Open Barrier"]
+        D4 --> D5["5. Extend Window Remotely or Depart"]
+    end
+
+    subgraph Platform["⚡ Parko Core Platform"]
+        API["REST API (Express 5 + TypeScript)"]
+        DB[("Atomic JSON DB (Thread-Safe Persistence)")]
+        IOT["IoT Gate Actuator Simulator (/api/bookings/:id/trigger-gate)"]
+        AUTH["Firebase Google OAuth + Persona Sessions"]
+        API <--> DB
+        API <--> IOT
+        API <--> AUTH
+    end
+
+    subgraph Hosts["🏢 Space Owner Journey"]
+        H1["1. 6-Step Guided Listing Wizard"] --> H2["2. Set Rates (₹/hr) & Weekly Availability Matrix"]
+        H2 --> H3["3. Monitor Live Vehicle Arrivals Feed"]
+        H3 --> H4["4. Remote Gate Actuation & Emergency Open"]
+        H4 --> H5["5. Weekly Direct Payouts (UPI/Bank) + ₹10L Shield"]
+    end
+
+    Drivers <--> Platform
+    Hosts <--> Platform
+```
+
+### 1. For Drivers: Reserving a Guaranteed Stall in 4 Steps
+1. **Search on Live Interactive Map (`/explore`)**:
+   - Search by landmark, neighborhood (e.g. *Indiranagar*, *BKC*, *Connaught Place*), or click **"Live GPS"** to pinpoint spots around your current coordinates.
+   - Filter by vehicle size (Two-Wheeler, Hatchback, Sedan, SUV), EV Charging, Covered bays, or 24/7 Security guards.
+2. **Instant Reservation & UPI Lock (`/space/:id` &rarr; `/book/:id`)**:
+   - Choose your arrival and departure times. Parko dynamically calculates duration, hourly rate, and the 10% Parko Guarantee Fee.
+   - Confirm via simulated UPI or Card. Your bay is instantly reserved and held exclusively for your license plate.
+3. **Contactless Smart Gate Access (`/dashboard/driver`)**:
+   - Get turn-by-turn directions to the entrance.
+   - The driver portal generates a **Digital Pass** featuring an encrypted QR code and an offline **4-digit Keypad PIN** (e.g. `4829`) to lift automatic barrier gates in under 30 seconds.
+4. **Flexible Departure & 1-Tap Extensions**:
+   - Running late? Tap "Extend Booking" from your phone to add time without running back to a payment meter.
+   - Plans changed? Enjoy a **100% Free Cancellation Policy** with instant full refund.
+
+### 2. For Property Owners: Monetizing Space Effortlessly
+1. **List in Under 3 Minutes (`/list-space`)**:
+   - Use our 6-step guided wizard to specify location, address, vehicle clearances, and upload photos.
+   - Location is automatically geocoded onto OpenStreetMap coordinates.
+2. **Dynamic Rates & Weekly Schedule Matrix (`/dashboard/owner`)**:
+   - Configure hourly rates (e.g. `₹50 - ₹120/hr`) and daily maximum caps.
+   - Use the **Weekly Stall Availability Matrix** to reserve certain hours for personal family use while letting Parko monetize empty downtime.
+3. **Automated IoT Access & Live Arrival Feed**:
+   - Time-bound dynamic PINs prevent unauthorized parking.
+   - View scheduled arrivals in real time with driver vehicle make, model, and plate number (`MH 02 CZ 8921`), with a one-click manual "Trigger Gate Open" actuator button.
+4. **Weekly Guaranteed Deposits & Host Protection Shield**:
+   - Earnings accumulate transparently and are deposited directly to your bank account or UPI every Friday.
+   - Every single booking is protected by the **₹10,00,000 Parko Property Protection Guarantee**.
+
+---
+
 ## 🚀 Key Features & Pages
 
 ### 1. Marketing Landing Page (`/`)

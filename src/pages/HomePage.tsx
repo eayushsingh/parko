@@ -21,6 +21,14 @@ import {
   Sparkles,
   ChevronDown,
   Navigation,
+  QrCode,
+  KeyRound,
+  MapPin,
+  SlidersHorizontal,
+  Radio,
+  Activity,
+  Wifi,
+  RefreshCw,
 } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
@@ -32,6 +40,21 @@ export const HomePage: React.FC = () => {
   const [searchDate, setSearchDate] = useState('Today');
   const [arrivalTime, setArrivalTime] = useState('09:00');
   const [departureTime, setDepartureTime] = useState('17:00');
+
+  // How It Works Interactive State
+  const [howItWorksTab, setHowItWorksTab] = useState<'driver' | 'owner'>('driver');
+  const [simulatedGateState, setSimulatedGateState] = useState<'idle' | 'scanning' | 'opened'>('idle');
+
+  const handleTestGateSimulation = () => {
+    if (simulatedGateState !== 'idle') return;
+    setSimulatedGateState('scanning');
+    setTimeout(() => {
+      setSimulatedGateState('opened');
+      setTimeout(() => {
+        setSimulatedGateState('idle');
+      }, 4500);
+    }, 1200);
+  };
 
   // Space Owner Earnings Calculator State
   const [calcSpots, setCalcSpots] = useState(1);
@@ -303,78 +326,348 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* HOW PARKO WORKS (4-Step Flow) */}
-      <section id="how-it-works" className="py-20 bg-white border-y border-slate-200/80">
+      {/* HOW PARKO WORKS (Comprehensive Dual Driver & Owner Guide) */}
+      <section id="how-it-works" className="py-24 bg-white border-y border-slate-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-              Seamless 4-Step Experience
+          <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
+            <span className="text-xs font-black uppercase tracking-widest text-emerald-700 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/80 inline-flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+              How Parko Works
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              Parking designed for the modern driver
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+              The smart parking marketplace explained
             </h2>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              No circling the block for 25 minutes. No exorbitant ₹300 surprise flat fees. Just tap, navigate, and park with total confidence.
+            <p className="text-base text-slate-600 leading-relaxed font-medium">
+              Whether you need a guaranteed parking spot in prime downtown traffic or want to turn an empty driveway into passive income, here is the complete step-by-step lifecycle.
             </p>
+
+            {/* Persona Switcher Tabs */}
+            <div className="inline-flex items-center p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200 shadow-inner mt-4">
+              <button
+                type="button"
+                onClick={() => setHowItWorksTab('driver')}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all duration-200 ${
+                  howItWorksTab === 'driver'
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 scale-[1.02]'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                }`}
+              >
+                <Car className="w-4 h-4" />
+                <span>For Drivers (Reserve a Bay)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setHowItWorksTab('owner')}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all duration-200 ${
+                  howItWorksTab === 'owner'
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 scale-[1.02]'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                }`}
+              >
+                <Building className="w-4 h-4" />
+                <span>For Space Hosts (List & Monetize)</span>
+              </button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+          {/* Workflow Steps Grid */}
+          {howItWorksTab === 'driver' ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+              {/* Step 1 */}
+              <div className="group flex flex-col justify-between bg-slate-50/70 hover:bg-white transition-all duration-300 p-6 rounded-2xl border border-slate-200/90 hover:border-emerald-400 hover:shadow-xl hover:-translate-y-1">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-black text-lg flex items-center justify-center shadow-md shadow-emerald-900/10">
+                      01
+                    </div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
+                      Search & Map
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-700 transition-colors">
+                    Find on Live Map
+                  </h3>
+                  <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                    Search any Indian city, landmark, or enable live GPS on our OpenStreetMap interface. Filter by EV charging, covered security, and vehicle size.
+                  </p>
+                </div>
+                <div className="mt-5 pt-4 border-t border-slate-200/70 flex items-center gap-2 text-[11px] font-semibold text-slate-500">
+                  <MapPin className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Real-time bay availability counters</span>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="group flex flex-col justify-between bg-slate-50/70 hover:bg-white transition-all duration-300 p-6 rounded-2xl border border-slate-200/90 hover:border-emerald-400 hover:shadow-xl hover:-translate-y-1">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-black text-lg flex items-center justify-center shadow-md shadow-emerald-900/10">
+                      02
+                    </div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
+                      Instant Lock
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-700 transition-colors">
+                    Reserve & UPI Hold
+                  </h3>
+                  <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                    Select your exact arrival & departure window. Confirm with 1-tap UPI or card. Your stall is immediately locked and guaranteed with zero surge fees.
+                  </p>
+                </div>
+                <div className="mt-5 pt-4 border-t border-slate-200/70 flex items-center gap-2 text-[11px] font-semibold text-slate-500">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>100% Free cancellation policy</span>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="group flex flex-col justify-between bg-slate-50/70 hover:bg-white transition-all duration-300 p-6 rounded-2xl border border-slate-200/90 hover:border-emerald-400 hover:shadow-xl hover:-translate-y-1">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-black text-lg flex items-center justify-center shadow-md shadow-emerald-900/10">
+                      03
+                    </div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
+                      Smart Access
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-700 transition-colors">
+                    Scan & Park
+                  </h3>
+                  <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                    Navigate straight to your reserved stall. Scan your digital QR pass at the barrier scanner or type your 4-digit keypad PIN for automated gate opening.
+                  </p>
+                </div>
+                <div className="mt-5 pt-4 border-t border-slate-200/70 flex items-center gap-2 text-[11px] font-semibold text-slate-500">
+                  <QrCode className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>&lt; 30s contactless entry barrier</span>
+                </div>
+              </div>
+
+              {/* Step 4 */}
+              <div className="group flex flex-col justify-between bg-slate-50/70 hover:bg-white transition-all duration-300 p-6 rounded-2xl border border-slate-200/90 hover:border-emerald-400 hover:shadow-xl hover:-translate-y-1">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-black text-lg flex items-center justify-center shadow-md shadow-emerald-900/10">
+                      04
+                    </div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
+                      Flexible Exit
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-700 transition-colors">
+                    Extend Remotely
+                  </h3>
+                  <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                    Need more time? Extend your parking duration with a single tap on your Driver Dashboard. No rush, no ticket queues, and zero surprise fines.
+                  </p>
+                </div>
+                <div className="mt-5 pt-4 border-t border-slate-200/70 flex items-center gap-2 text-[11px] font-semibold text-slate-500">
+                  <RefreshCw className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>1-Tap window extensions</span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+              {/* Host Step 1 */}
+              <div className="group flex flex-col justify-between bg-slate-50/70 hover:bg-white transition-all duration-300 p-6 rounded-2xl border border-slate-200/90 hover:border-emerald-400 hover:shadow-xl hover:-translate-y-1">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-black text-lg flex items-center justify-center shadow-md shadow-emerald-900/10">
+                      01
+                    </div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
+                      List in 3 Min
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-700 transition-colors">
+                    Publish Your Listing
+                  </h3>
+                  <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                    Use our 6-step guided wizard to register your residential driveway, commercial lot, or basement stall. Set supported vehicle sizes and security features.
+                  </p>
+                </div>
+                <div className="mt-5 pt-4 border-t border-slate-200/70 flex items-center gap-2 text-[11px] font-semibold text-slate-500">
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Automatic OpenStreetMap geocoding</span>
+                </div>
+              </div>
+
+              {/* Host Step 2 */}
+              <div className="group flex flex-col justify-between bg-slate-50/70 hover:bg-white transition-all duration-300 p-6 rounded-2xl border border-slate-200/90 hover:border-emerald-400 hover:shadow-xl hover:-translate-y-1">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-black text-lg flex items-center justify-center shadow-md shadow-emerald-900/10">
+                      02
+                    </div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
+                      Full Control
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-700 transition-colors">
+                    Set Rates & Schedule
+                  </h3>
+                  <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                    Set your own hourly rate and daily maximum. Use our weekly stall matrix to block hours when you need the spot yourself and monetize downtime automatically.
+                  </p>
+                </div>
+                <div className="mt-5 pt-4 border-t border-slate-200/70 flex items-center gap-2 text-[11px] font-semibold text-slate-500">
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Custom weekly availability matrix</span>
+                </div>
+              </div>
+
+              {/* Host Step 3 */}
+              <div className="group flex flex-col justify-between bg-slate-50/70 hover:bg-white transition-all duration-300 p-6 rounded-2xl border border-slate-200/90 hover:border-emerald-400 hover:shadow-xl hover:-translate-y-1">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-black text-lg flex items-center justify-center shadow-md shadow-emerald-900/10">
+                      03
+                    </div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
+                      Zero Friction
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-700 transition-colors">
+                    Automated Smart Access
+                  </h3>
+                  <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                    Parko creates time-restricted keypad codes and digital passes for verified drivers. Track incoming arrivals live or trigger barrier gates remotely.
+                  </p>
+                </div>
+                <div className="mt-5 pt-4 border-t border-slate-200/70 flex items-center gap-2 text-[11px] font-semibold text-slate-500">
+                  <Radio className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Live arrival feed & IoT actuator</span>
+                </div>
+              </div>
+
+              {/* Host Step 4 */}
+              <div className="group flex flex-col justify-between bg-slate-50/70 hover:bg-white transition-all duration-300 p-6 rounded-2xl border border-slate-200/90 hover:border-emerald-400 hover:shadow-xl hover:-translate-y-1">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-black text-lg flex items-center justify-center shadow-md shadow-emerald-900/10">
+                      04
+                    </div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
+                      Direct Deposit
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-700 transition-colors">
+                    Weekly Payouts & Shield
+                  </h3>
+                  <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                    Earnings are credited directly to your bank account or UPI every Friday. Every single booking is protected by our ₹10,00,000 Host Protection Shield.
+                  </p>
+                </div>
+                <div className="mt-5 pt-4 border-t border-slate-200/70 flex items-center gap-2 text-[11px] font-semibold text-slate-500">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>₹10,00,000 Host property guarantee</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Interactive Smart Gate Simulator Box */}
+          <div className="mt-14 max-w-4xl mx-auto rounded-3xl bg-slate-950 text-white p-6 sm:p-8 border border-slate-800 shadow-2xl relative overflow-hidden">
+            {/* Background decorative glow */}
+            <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
             
-            {/* Step 1 */}
-            <div className="group flex flex-col items-start bg-slate-50/70 hover:bg-white transition-all duration-300 p-6 rounded-2xl border border-slate-200/80 hover:border-emerald-300/80 hover:shadow-soft-md hover:-translate-y-1">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 text-white font-black text-lg flex items-center justify-center shadow-sm mb-4 group-hover:scale-105 group-hover:shadow-md transition-all duration-300">
-                01
+            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+              <div className="space-y-3 max-w-xl text-center lg:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30">
+                  <Activity className="w-3.5 h-3.5 animate-pulse" />
+                  <span>Interactive Demonstration: Smart IoT Access</span>
+                </div>
+                <h3 className="text-2xl font-black tracking-tight text-white">
+                  See how automated gate access works in real life
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                  When a driver arrives at the parking gate, Parko validates their digital pass against our server IoT actuator. Click the button to test live barrier actuation.
+                </p>
               </div>
-              <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-700 transition-colors">Search & Select</h3>
-              <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                Enter your destination and parking window. Filter by EV charging, covered garages, or 24/7 security.
-              </p>
-            </div>
 
-            {/* Step 2 */}
-            <div className="group flex flex-col items-start bg-slate-50/70 hover:bg-white transition-all duration-300 p-6 rounded-2xl border border-slate-200/80 hover:border-emerald-300/80 hover:shadow-soft-md hover:-translate-y-1">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 text-white font-black text-lg flex items-center justify-center shadow-sm mb-4 group-hover:scale-105 group-hover:shadow-md transition-all duration-300">
-                02
+              {/* Gate Simulator Visual Card */}
+              <div className="w-full lg:w-auto shrink-0 bg-slate-900/90 rounded-2xl p-5 border border-slate-800 flex flex-col items-center gap-4 text-center min-w-[280px]">
+                <div className="w-full flex items-center justify-between text-[11px] text-slate-400 border-b border-slate-800 pb-2">
+                  <span className="flex items-center gap-1.5 font-mono">
+                    <Wifi className="w-3.5 h-3.5 text-emerald-400" /> IOT-BARRIER-01
+                  </span>
+                  <span className="font-mono text-emerald-400 font-bold">ONLINE</span>
+                </div>
+
+                {/* Gate Barrier Animation Display */}
+                <div className="h-16 flex flex-col items-center justify-center">
+                  {simulatedGateState === 'idle' && (
+                    <div className="flex flex-col items-center gap-1">
+                      <div className="w-36 h-2 bg-amber-500 rounded-full" />
+                      <span className="text-xs font-mono font-bold text-amber-400 tracking-wider">
+                        BARRIER DOWN • AWAITING PASS
+                      </span>
+                    </div>
+                  )}
+
+                  {simulatedGateState === 'scanning' && (
+                    <div className="flex flex-col items-center gap-1.5 animate-pulse">
+                      <QrCode className="w-6 h-6 text-emerald-400 animate-spin" />
+                      <span className="text-xs font-mono font-bold text-emerald-400 tracking-wider">
+                        VALIDATING DIGITAL TOKEN...
+                      </span>
+                    </div>
+                  )}
+
+                  {simulatedGateState === 'opened' && (
+                    <div className="flex flex-col items-center gap-1 animate-bounce">
+                      <div className="w-36 h-2 bg-emerald-400 rounded-full rotate-45 transform -translate-y-2 origin-left transition-transform duration-500" />
+                      <span className="text-xs font-mono font-bold text-emerald-400 tracking-wider">
+                        GATE OPENED • ACCESS GRANTED
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Trigger Button */}
+                <button
+                  type="button"
+                  onClick={handleTestGateSimulation}
+                  disabled={simulatedGateState !== 'idle'}
+                  className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+                    simulatedGateState === 'idle'
+                      ? 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-md shadow-emerald-500/20 active:scale-95 cursor-pointer'
+                      : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                  }`}
+                >
+                  <KeyRound className="w-4 h-4" />
+                  <span>
+                    {simulatedGateState === 'idle'
+                      ? 'Simulate Gate Check-in'
+                      : simulatedGateState === 'scanning'
+                      ? 'Authorizing...'
+                      : 'Barrier Open (4s)'}
+                  </span>
+                </button>
               </div>
-              <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-700 transition-colors">Instant Reserve</h3>
-              <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                Lock in your spot with transparent hourly pricing. Your bay is guaranteed and held exclusively for your vehicle.
-              </p>
             </div>
-
-            {/* Step 3 */}
-            <div className="group flex flex-col items-start bg-slate-50/70 hover:bg-white transition-all duration-300 p-6 rounded-2xl border border-slate-200/80 hover:border-emerald-300/80 hover:shadow-soft-md hover:-translate-y-1">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 text-white font-black text-lg flex items-center justify-center shadow-sm mb-4 group-hover:scale-105 group-hover:shadow-md transition-all duration-300">
-                03
-              </div>
-              <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-700 transition-colors">Navigate & Scan</h3>
-              <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                Get turn-by-turn directions directly to your stall. Scan your Parko digital pass or keypad code for automatic entry.
-              </p>
-            </div>
-
-            {/* Step 4 */}
-            <div className="group flex flex-col items-start bg-slate-50/70 hover:bg-white transition-all duration-300 p-6 rounded-2xl border border-slate-200/80 hover:border-emerald-300/80 hover:shadow-soft-md hover:-translate-y-1">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 text-white font-black text-lg flex items-center justify-center shadow-sm mb-4 group-hover:scale-105 group-hover:shadow-md transition-all duration-300">
-                04
-              </div>
-              <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-700 transition-colors">Extend or Depart</h3>
-              <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                Need more time? Extend your parking window right from your phone without rushing back to a ticket machine.
-              </p>
-            </div>
-
           </div>
 
-          <div className="mt-12 text-center">
+          {/* Action CTAs */}
+          <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to="/explore"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-sm transition-all active:scale-[0.98]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-sm transition-all active:scale-[0.98]"
             >
               <Car className="w-4 h-4 text-emerald-400" />
-              <span>Try Reserving a Spot Now</span>
+              <span>Explore & Reserve a Spot</span>
               <ArrowRight className="w-4 h-4 ml-1" />
+            </Link>
+            <Link
+              to="/list-space"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-sm border border-emerald-200 transition-all active:scale-[0.98]"
+            >
+              <Building className="w-4 h-4 text-emerald-600" />
+              <span>List Your Empty Space Free</span>
             </Link>
           </div>
 
