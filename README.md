@@ -8,7 +8,7 @@ Built with **React**, **TypeScript**, **Tailwind CSS**, and **Vite**. Inspired b
 
 ## 🧠 How Parko Works (Complete System Walkthrough)
 
-Parko is a two-sided mobility network designed to eliminate urban parking congestion in Indian metros (Bengaluru, Mumbai, Delhi-NCR, Pune, Hyderabad). It connects urban drivers needing guaranteed parking with residential, commercial, and private property owners who have empty stalls, driveways, or carports.
+Parko is a two-sided mobility network designed to eliminate urban parking congestion in Indian metros (Bengaluru, Mumbai, Delhi-NCR, Pune, Hyderabad). It connects urban drivers needing guaranteed parking with residential, commercial, and private property owners who have empty stalls, driveways, or carports.It is one Client project.
 
 For a full technical deep dive, see the dedicated [HOW_IT_WORKS.md](file:///Users/ayush/Desktop/Parko/HOW_IT_WORKS.md).
 
